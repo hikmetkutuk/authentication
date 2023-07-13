@@ -44,7 +44,7 @@ function Header() {
                 </>
               ) : (
                 <div className="media-body ml-2 d-none d-lg-block">
-                  <Link className="nav-link" to="">
+                  <Link className="nav-link" to="/login">
                     <i className="ni ni-key-25 text-info" />
                     <span
                       className="mb-0 ml-2 text-sm  font-weight-bold"

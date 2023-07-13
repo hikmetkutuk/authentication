@@ -28,11 +28,6 @@ function Sidebar() {
           {/* Collapse header */}
           <div className="navbar-collapse-header d-md-none">
             <div className="row">
-              <div className="col-6 collapse-brand">
-                <Link to="./index.html">
-                  <img src="./assets/img/brand/blue.png" />
-                </Link>
-              </div>
               <div className="col-6 collapse-close">
                 <button
                   type="button"
