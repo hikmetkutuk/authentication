@@ -81,9 +81,9 @@ function Login() {
           </div>
           <div className="row mt-3">
             <div className="col-6">
-              <a href="#" className="text-light">
+              <Link to="/forgot-password" className="text-light">
                 <small>Forgot password?</small>
-              </a>
+              </Link>
             </div>
             <div className="col-6 text-right">
               <Link to="/register" className="text-light">
