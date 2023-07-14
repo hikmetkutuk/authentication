@@ -1,13 +1,23 @@
 import CSS from "csstype";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const userName: CSS.Properties = {
   color: "black",
 };
 
+const loginButton: CSS.Properties = {
+  border: "none",
+  backgroundColor: "#f8f9fe"
+}
+
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const authenticated = localStorage.getItem("authenticated");
+  const navigate = useNavigate();
+  
+  function logoutHandle() {
+    localStorage.clear();
+    navigate(0);
+  }
 
   return (
     <nav
@@ -24,39 +34,47 @@ function Header() {
         {/* User */}
         <ul className="navbar-nav align-items-center d-none d-md-flex">
           <li className="nav-item dropdown">
-            <div className="media align-items-center">
-              {isLoggedIn ? (
-                <>
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="Image placeholder"
-                      src="./assets/img/theme/team-4-800x800.jpg"
-                    />
-                  </span>
+            <button
+              className="nav-link pr-0"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style={loginButton}
+            >
+              <div className="media align-items-center">
+                {authenticated ? (
+                  <>
+                    <span className="avatar avatar-sm rounded-circle">
+                      <img
+                        alt="Image placeholder"
+                        src="./assets/img/theme/team-4-800x800.jpg"
+                      />
+                    </span>
+                    <div className="media-body ml-2 d-none d-lg-block">
+                      <span
+                        className="mb-0 text-sm  font-weight-bold"
+                        style={userName}
+                      >
+                        Jessica Jones
+                      </span>
+                    </div>
+                  </>
+                ) : (
                   <div className="media-body ml-2 d-none d-lg-block">
-                    <span
-                      className="mb-0 text-sm  font-weight-bold"
-                      style={userName}
-                    >
-                      Jessica Jones
-                    </span>
+                    <Link className="nav-link" to="/login">
+                      <i className="ni ni-key-25 text-info" />
+                      <span
+                        className="mb-0 ml-2 text-sm  font-weight-bold"
+                        style={userName}
+                      >
+                        Login
+                      </span>
+                    </Link>
                   </div>
-                </>
-              ) : (
-                <div className="media-body ml-2 d-none d-lg-block">
-                  <Link className="nav-link" to="/login">
-                    <i className="ni ni-key-25 text-info" />
-                    <span
-                      className="mb-0 ml-2 text-sm  font-weight-bold"
-                      style={userName}
-                    >
-                      Login
-                    </span>
-                  </Link>
-                </div>
-              )}
-            </div>
-
+                )}
+              </div>
+            </button>
             <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
               <div className=" dropdown-header noti-title">
                 <h6 className="text-overflow m-0">Welcome!</h6>
@@ -65,7 +83,7 @@ function Header() {
                 <i className="ni ni-single-02" />
                 <span>My profile</span>
               </Link>
-              <Link to="#!" className="dropdown-item">
+              <Link to="#!" className="dropdown-item" onClick={logoutHandle}>
                 <i className="ni ni-user-run" />
                 <span>Logout</span>
               </Link>

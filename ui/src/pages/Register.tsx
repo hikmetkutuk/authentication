@@ -1,6 +1,10 @@
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import CSS from "csstype";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import { register } from "../services/userService";
 
 const initialState = {
   name: "",
@@ -20,6 +24,9 @@ const checkIconStyle: CSS.Properties = {
 };
 
 function Register() {
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState(initialState);
   const { name, email, password, confirmPassword } = formData;
 
@@ -42,6 +49,21 @@ function Register() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Password and Confirm Password did not match.");
+    } else {
+      try {
+        dispatch(register(formData));
+        navigate("/");
+        navigate(0);
+      } catch (err) {
+        alert("something went wrong: " + err);
+      }
+    }
   };
 
   useEffect(() => {
@@ -86,7 +108,7 @@ function Register() {
               <div className="text-center"></div>
             </div>
             <div className="card-body px-lg-5 py-lg-5">
-              <form role="form">
+              <form role="form" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="input-group input-group-alternative mb-3">
                     <div className="input-group-prepend">
@@ -151,7 +173,7 @@ function Register() {
                     <input
                       className="form-control"
                       placeholder="Confirm Password"
-                      type="confirmPassword"
+                      type="password"
                       name="confirmPassword"
                       value={confirmPassword}
                       required
@@ -188,7 +210,7 @@ function Register() {
                   </small>
                 </div>
                 <div className="text-center">
-                  <button type="button" className="btn btn-primary mt-4">
+                  <button type="submit" className="btn btn-primary mt-4">
                     Create account
                   </button>
                 </div>
