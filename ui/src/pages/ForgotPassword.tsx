@@ -10,7 +10,7 @@ function ForgotPassword() {
           <div className="card bg-secondary shadow border-0">
             <div className="card-header bg-transparent pb-5">
               <div className="text-muted text-center mt-2 mb-4">
-                <small>Forgot Password</small>
+                <small>FORGOT PASSWORD</small>
               </div>
               <div className="text-center"></div>
             </div>
