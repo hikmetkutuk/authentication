@@ -3,6 +3,7 @@ package com.authentication.service;
 import com.authentication.dto.AuthResponse;
 import com.authentication.dto.LoginRequest;
 import com.authentication.dto.RegisterRequest;
+import com.authentication.exception.ResourceAlreadyExistException;
 import com.authentication.model.Role;
 import com.authentication.model.Token;
 import com.authentication.model.TokenType;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -43,6 +45,10 @@ public class UserService implements UserDetailsService {
     }
 
     public AuthResponse register(RegisterRequest registerRequest) {
+        boolean isEmailExist = userRepository.existsByEmail(registerRequest.getEmail());
+        if(isEmailExist) {
+            throw new ResourceAlreadyExistException("Email already exist: " + registerRequest.getEmail());
+        }
         User newUser = new User(
                 null,
                 registerRequest.getName(),
@@ -121,6 +127,11 @@ public class UserService implements UserDetailsService {
 
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    public String hardDeleteUser(String id) {
+        userRepository.deleteById(id);
+        return "User successfully deleted";
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

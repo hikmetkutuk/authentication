@@ -16,6 +16,7 @@ data class User @JvmOverloads constructor(
 
     val name: String,
 
+    @Column(unique = true)
     val email: String,
 
     @JvmField
