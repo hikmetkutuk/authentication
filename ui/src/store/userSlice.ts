@@ -3,7 +3,7 @@ import { RootState } from "./index";
 
 import User from "../models/IUser";
 
-import { register } from "../services/userService";
+import { registerUser, loginUser } from "../services/userService";
 
 interface UserState {
   user: User;
@@ -29,12 +29,29 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      register.fulfilled,
-      (state, action: PayloadAction<User>) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.users.push(action.payload);
-      }
-    );
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || "An error occurred.";
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<User>) => {
+        state.users.push(action.payload);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || "An error occurred.";
+      });
   },
 });
 

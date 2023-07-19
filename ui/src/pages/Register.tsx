@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
-import { register } from "../services/userService";
+import { registerUser } from "../services/userService";
 
 const initialState = {
   name: "",
@@ -48,20 +48,23 @@ function Register() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Password and Confirm Password did not match.");
     } else {
       try {
-        dispatch(register(formData));
+        await dispatch(registerUser(formData));
         navigate("/");
         navigate(0);
       } catch (err) {
-        alert("something went wrong: " + err);
+        alert("Something went wrong while registering. Please try again.");
       }
     }
   };

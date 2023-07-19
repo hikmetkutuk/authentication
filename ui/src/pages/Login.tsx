@@ -1,13 +1,40 @@
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import { loginUser } from "../services/userService";
+
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const navigate = useNavigate();
 
-  const handleInputChange = () => {};
+  const [formData, setFormData] = useState(initialState);
+  const { email, password } = formData;
 
-  const loginUser = () => {};
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(loginUser(formData)); // await ekledik
+      navigate("/");
+    } catch (err) {
+      console.error("Error while logging in:", err);
+      alert("Something went wrong while logging in. Please try again.");
+    }
+  };
 
   return (
     <div className="container mt--8 pb-5">
@@ -21,7 +48,7 @@ function Login() {
               <div className="btn-wrapper text-center"></div>
             </div>
             <div className="card-body px-lg-5 py-lg-5">
-              <form role="form" onSubmit={loginUser}>
+              <form role="form" onSubmit={handleSubmit}>
                 <div className="form-group mb-3">
                   <div className="input-group input-group-alternative">
                     <div className="input-group-prepend">
