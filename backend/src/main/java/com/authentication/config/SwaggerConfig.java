@@ -17,13 +17,13 @@ public class SwaggerConfig {
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("Spring Boot Develop Rest APIs",
+        return new ApiInfo("Authentication Rest APIs",
                 "",
-                "1.0",
-                "Terms of service",
-                new Contact("test", "www.org.com", "test@emaildomain.com"),
-                "License of API",
-                "API license URL",
+                "1.1",
+                "",
+                new Contact("", "", ""),
+                "",
+                "",
                 Collections.emptyList());
     }
 
